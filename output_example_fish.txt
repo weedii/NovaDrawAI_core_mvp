@@ -1,0 +1,212 @@
+(venv) PS D:\work\NovaDrawAI_core_mvp> python .\generate_drawing_steps_images_gpt-5.py
+What do you want to draw? (e.g., owl, fish, cat): cat
+
+Generating drawing guide for: cat
+
+📁 Session folder created: steps\cat_20251024_114247
+
+📝 Steps:
+
+Start with a big oval for the cat's body
+Add a circle on top for the cat's head
+Draw two pointy triangles on top of the head for ears
+Make two big circles inside the head for the eyes
+Add small circles inside the eyes for pupils
+Draw a little triangle at the bottom of the head for the nose
+Add a long curvy line for the tail on the side of the body
+
+🎨 Generating and saving images...
+
+Generating image 1/7...
+🔍 FULL PROMPT STRUCTURE for step 1:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a cat. This is step 1 of the tutorial. Your task: Start with a big oval for the cat's body IMPORTANT: Only do what is described in this step. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy. Show only the basic shapes and lines needed for this specific step."
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 1 image generated successfully
+💾 Image saved: steps\cat_20251024_114247\step_01_cat.png
+Generating image 2/7...
+🔍 FULL PROMPT STRUCTURE for step 2:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a cat. We are now at step 2 of the tutorial. Start from the given image and add only what is described in this step: Add a circle on top for the cat's head IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 2 image generated successfully
+💾 Image saved: steps\cat_20251024_114247\step_02_cat.png
+Generating image 3/7...
+🔍 FULL PROMPT STRUCTURE for step 3:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a cat. We are now at step 3 of the tutorial. Start from the given image and add only what is described in this step: Draw two pointy triangles on top of the head for ears IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 3 image generated successfully
+💾 Image saved: steps\cat_20251024_114247\step_03_cat.png
+Generating image 4/7...
+🔍 FULL PROMPT STRUCTURE for step 4:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a cat. We are now at step 4 of the tutorial. Start from the given image and add only what is described in this step: Make two big circles inside the head for the eyes IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 4 image generated successfully
+💾 Image saved: steps\cat_20251024_114247\step_04_cat.png
+Generating image 5/7...
+🔍 FULL PROMPT STRUCTURE for step 5:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a cat. We are now at step 5 of the tutorial. Start from the given image and add only what is described in this step: Add small circles inside the eyes for pupils IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 5 image generated successfully
+💾 Image saved: steps\cat_20251024_114247\step_05_cat.png
+Generating image 6/7...
+🔍 FULL PROMPT STRUCTURE for step 6:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a cat. We are now at step 6 of the tutorial. Start from the given image and add only what is described in this step: Draw a little triangle at the bottom of the head for the nose IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 6 image generated successfully
+💾 Image saved: steps\cat_20251024_114247\step_06_cat.png
+Generating image 7/7...
+🔍 FULL PROMPT STRUCTURE for step 7:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a cat. We are now at step 7 of the tutorial. Start from the given image and add only what is described in this step: Add a long curvy line for the tail on the side of the body IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 7 image generated successfully
+💾 Image saved: steps\cat_20251024_114247\step_07_cat.png
+
+🎉 Complete! Images saved in: steps\cat_20251024_114247
+📊 Total images generated: 7/7
+
+================================================================================
+📊 API USAGE & COST SUMMARY
+================================================================================
+
+🔸 Request #1: Text Generation
+   Description: Generate drawing steps for cat
+   Model: gpt-4o-mini
+   Usage data:
+     prompt_tokens: 126
+     completion_tokens: 85
+     total_tokens: 211
+     completion_tokens_details: CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0)
+     prompt_tokens_details: PromptTokensDetails(audio_tokens=0, cached_tokens=0)
+
+🔸 Request #2: Image Generation
+   Description: Generate step 1 image for cat
+   Model: gpt-5
+   Usage data:
+     input_tokens: 2743
+     output_tokens: 1589
+     total_tokens: 4332
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=1472)
+
+🔸 Request #3: Image Generation
+   Description: Generate step 2 image for cat
+   Model: gpt-5
+   Usage data:
+     input_tokens: 2614
+     output_tokens: 826
+     total_tokens: 3440
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=704)
+
+🔸 Request #4: Image Generation
+   Description: Generate step 3 image for cat
+   Model: gpt-5
+   Usage data:
+     input_tokens: 3434
+     output_tokens: 1642
+     total_tokens: 5076
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=1472)
+
+🔸 Request #5: Image Generation
+   Description: Generate step 4 image for cat
+   Model: gpt-5
+   Usage data:
+     input_tokens: 2319
+     output_tokens: 558
+     total_tokens: 2877
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=448)
+
+🔸 Request #6: Image Generation
+   Description: Generate step 5 image for cat
+   Model: gpt-5
+   Usage data:
+     input_tokens: 2315
+     output_tokens: 501
+     total_tokens: 2816
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=384)
+
+🔸 Request #7: Image Generation
+   Description: Generate step 6 image for cat
+   Model: gpt-5
+   Usage data:
+     input_tokens: 3719
+     output_tokens: 1649
+     total_tokens: 5368
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=1536)
+
+🔸 Request #8: Image Generation
+   Description: Generate step 7 image for cat
+   Model: gpt-5
+   Usage data:
+     input_tokens: 3211
+     output_tokens: 837
+     total_tokens: 4048
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=704)
+
+--------------------------------------------------------------------------------
+📊 SESSION TOTALS:
+   Total input tokens: 20,481
+   Total output tokens: 7,687
+   Total tokens: 28,168
+💰 TOTAL SESSION COST: Not available in API response
+📈 Total requests made: 8
+================================================================================
+(venv) PS D:\work\NovaDrawAI_core_mvp>

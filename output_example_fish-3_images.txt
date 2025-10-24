@@ -1,0 +1,112 @@
+(venv) PS D:\work\NovaDrawAI_core_mvp> python .\generate_drawing_steps_images_gpt-5.py
+What do you want to draw? (e.g., owl, fish, cat): fish
+
+Generating drawing guide for: fish
+
+📁 Session folder created: steps\fish_20251024_112940
+
+📝 Steps:
+
+Draw a big oval for the fish's body.
+Add a triangle at the back for the tail fin.
+Draw two circles for the eyes and a curved smile for the mouth.
+
+🎨 Generating and saving images...
+
+Generating image 1/3...
+🔍 FULL PROMPT STRUCTURE for step 1:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a fish. This is step 1 of the tutorial. Your task: Draw a big oval for the fish's body. IMPORTANT: Only do what is described in this step. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy. Show only the basic shapes and lines needed for this specific step."
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 1 image generated successfully
+💾 Image saved: steps\fish_20251024_112940\step_01_fish.png
+Generating image 2/3...
+🔍 FULL PROMPT STRUCTURE for step 2:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a fish. We are now at step 2 of the tutorial. Start from the given image and add only what is described in this step: Add a triangle at the back for the tail fin. IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 2 image generated successfully
+💾 Image saved: steps\fish_20251024_112940\step_02_fish.png
+Generating image 3/3...
+🔍 FULL PROMPT STRUCTURE for step 3:
+   Model: gpt-5
+   Input structure:
+     - Role: user
+     - Content:
+       [0] Type: input_text
+           Text: "We are creating a step-by-step drawing tutorial to teach kids how to draw a fish. We are now at step 3 of the tutorial. Start from the given image and add only what is described in this step: Draw two circles for the eyes and a curved smile for the mouth. IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. Only add what this specific step describes. Do not add elements from future steps. Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. Style: Simple black and white line drawing, clean cartoon style, no shading or color. Make it easy for children to copy."
+       [1] Type: input_image
+           Image URL: data:image/png;base64,[BASE64_DATA]
+   Tools: image_generation (quality: low)
+--------------------------------------------------------------------------------
+✅ Step 3 image generated successfully
+💾 Image saved: steps\fish_20251024_112940\step_03_fish.png
+
+🎉 Complete! Images saved in: steps\fish_20251024_112940
+📊 Total images generated: 3/3
+
+================================================================================
+📊 API USAGE & COST SUMMARY
+================================================================================
+
+🔸 Request #1: Text Generation
+   Description: Generate drawing steps for fish
+   Model: gpt-4o-mini
+   Usage data:
+     prompt_tokens: 128
+     completion_tokens: 38
+     total_tokens: 166
+     completion_tokens_details: CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0)
+     prompt_tokens_details: PromptTokensDetails(audio_tokens=0, cached_tokens=0)
+
+🔸 Request #2: Image Generation
+   Description: Generate step 1 image for fish
+   Model: gpt-5
+   Usage data:
+     input_tokens: 1802
+     output_tokens: 691
+     total_tokens: 2493
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=576)
+
+🔸 Request #3: Image Generation
+   Description: Generate step 2 image for fish
+   Model: gpt-5
+   Usage data:
+     input_tokens: 2761
+     output_tokens: 971
+     total_tokens: 3732
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=832)
+
+🔸 Request #4: Image Generation
+   Description: Generate step 3 image for fish
+   Model: gpt-5
+   Usage data:
+     input_tokens: 2583
+     output_tokens: 500
+     total_tokens: 3083
+     input_tokens_details: InputTokensDetails(cached_tokens=0)
+     output_tokens_details: OutputTokensDetails(reasoning_tokens=384)
+
+--------------------------------------------------------------------------------
+📊 SESSION TOTALS:
+   Total input tokens: 7,274
+   Total output tokens: 2,200
+   Total tokens: 9,474
+💰 TOTAL SESSION COST: Not available in API response
+📈 Total requests made: 4
+================================================================================
+(venv) PS D:\work\NovaDrawAI_core_mvp>
