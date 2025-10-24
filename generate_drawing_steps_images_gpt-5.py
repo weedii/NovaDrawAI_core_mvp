@@ -172,7 +172,7 @@ def generate_drawing_steps(subject):
     """
 
     prompt = f"""
-    Create 7 simple kid-friendly drawing steps to draw a {subject}.
+    Create 5 simple kid-friendly drawing steps to draw a {subject}.
     Each step should describe what to draw next in one short sentence, like teaching a 6-year-old.
     
     IMPORTANT: Return ONLY the steps, one per line, without any numbering, introduction, or conclusion.
