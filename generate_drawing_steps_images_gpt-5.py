@@ -180,10 +180,13 @@ def generate_drawing_steps(subject):
     
     CRITICAL CONSISTENCY RULES:
     1. Each step must build EXACTLY on what was drawn in previous steps
-    2. Never contradict or change what was established in earlier steps
-    3. Be specific about placement relative to existing elements
-    4. Use consistent terminology throughout (if you call it "head" in step 1, don't call it "face" in step 3)
-    5. Maintain consistent proportions and style descriptions
+    2. NEVER erase, remove, modify, or change ANY element from previous steps
+    3. NEVER contradict or override what was established in earlier steps
+    4. ONLY ADD new elements - never replace, update, or alter existing ones
+    5. Be specific about placement relative to existing elements WITHOUT changing them
+    6. Use consistent terminology throughout (if you call it "head" in step 1, don't call it "face" in step 3)
+    7. Maintain consistent proportions and style descriptions
+    8. If an element was drawn in a previous step, it stays exactly as it was drawn
     
     Make each step descriptive and specific to create a fun, recognizable drawing. Avoid overly simple geometric shapes like "draw a triangle for the nose". Instead, use more engaging descriptions:
     - Instead of "triangle nose" → "small curved nose" or "tiny button nose"
@@ -199,15 +202,21 @@ def generate_drawing_steps(subject):
     Do NOT include phrases like "Here are the steps" or "Have fun drawing".
     Do NOT include coloring instructions like "color it red" or "add some color".
     
-    Example format for a cat (notice how each step builds on the previous):
+    Example format for a cat (notice how each step ONLY ADDS, never changes existing elements):
     Draw a round fluffy head in the center
-    Add two small triangular ears on top of the head
-    Draw two big round eyes with tiny dots inside, positioned in the upper part of the head
-    Add a small curved nose below and between the eyes
-    Draw a rounded body shape connected below the head
-    Add four short legs extending down from the body
-    Draw a long curved tail coming from the back right side of the body
-    Add three small whiskers on each side of the head, near the nose
+    Add two small triangular ears on top of the head (head stays exactly the same)
+    Draw two big round eyes with tiny dots inside, positioned in the upper part of the head (head and ears stay exactly the same)
+    Add a small curved nose below and between the eyes (head, ears, and eyes stay exactly the same)
+    Draw a rounded body shape connected below the head (all previous elements stay exactly the same)
+    Add four short legs extending down from the body (head, ears, eyes, nose, and body stay exactly the same)
+    Draw a long curved tail coming from the back right side of the body (all previous elements stay exactly the same)
+    Add three small whiskers on each side of the head, near the nose (all previous elements stay exactly the same)
+    
+    WRONG EXAMPLES (never do this):
+    - "Make the eyes bigger" (this changes existing eyes)
+    - "Redraw the head as an oval" (this changes existing head)
+    - "Update the nose to be smaller" (this modifies existing nose)
+    - "Change the ears to be pointier" (this alters existing ears)
     
     Subject: {subject}
     Steps:
@@ -283,10 +292,14 @@ def generate_drawing_steps(subject):
 def create_session_folder(subject):
     """
     Create a unique session folder for this drawing session.
+    Folder name will be lowercase with underscores instead of spaces.
     """
 
     try:
-        sanitized_subject = sanitize_filename(subject)
+        # Create folder-friendly name: lowercase and replace spaces with underscores
+        folder_subject = subject.lower().replace(" ", "_")
+        # Then sanitize for any other invalid characters
+        sanitized_subject = sanitize_filename(folder_subject)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         session_name = f"{sanitized_subject}_{timestamp}"
         session_path = Path("steps") / session_name
@@ -339,9 +352,12 @@ def generate_step_image(
             f"We are creating a step-by-step drawing tutorial to teach kids how to draw a {subject}. "
             f"This is step {step_number} of the tutorial. "
             f"Your task: {step_description} "
-            f"IMPORTANT: Only do what is described in this step. Do not add elements from future steps. "
+            f"CRITICAL: ONLY ADD what is described in this step. NEVER modify, erase, or change anything. "
+            f"Do not add elements from future steps. Do not remove or alter any existing elements. "
             f"Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. "
-            f"Style: Clean, engaging black and white line drawing with personality, cartoon style, no shading or color. "
+            f"Background: Pure white background - no patterns, textures, or colors in the background. "
+            f"Style: Clean, engaging black line drawing with personality, cartoon style, no shading or color fill. "
+            f"Use only black lines on pure white background - no gray tones or colored areas. "
             f"Make the drawing look fun and appealing while still being simple enough for children to copy. "
             f"Avoid overly geometric shapes - use curved lines, expressive features, and natural proportions. "
             f"Show only what is described in this specific step, but make it look good and engaging."
@@ -367,7 +383,7 @@ def generate_step_image(
             input_content.append(
                 {
                     "type": "input_image",
-                    "image_url": f"data:image/png;base64,{previous_image_base64}",
+                    "image_url": f"data:image/jpeg;base64,{previous_image_base64}",
                 }
             )
 
@@ -375,20 +391,27 @@ def generate_step_image(
             image_prompt = (
                 f"CRITICAL: You are editing step {step_number} of a {subject} drawing tutorial. "
                 f"The previous image shows the result of steps 1-{step_number-1}. "
-                f"PRESERVE EVERYTHING: Copy the previous image EXACTLY - every line, curve, shape, and detail must remain identical. "
+                f"ABSOLUTE PRESERVATION RULE: Copy the previous image EXACTLY - every single line, curve, shape, and detail must remain 100% identical. "
                 f"ONLY ADD: {step_description} "
-                f"CONSISTENCY REQUIREMENTS: "
-                f"- Do not change, move, resize, or redraw ANY existing elements "
-                f"- Do not modify the style, thickness, or appearance of existing lines "
-                f"- New elements must match the existing drawing style perfectly "
-                f"- Position new elements exactly as described relative to existing ones "
-                f"- If the step says 'add eyes to the head', the head must remain exactly as it was "
-                f"- If the step says 'add legs below the body', the body must stay identical "
-                f"Style: Clean, engaging black and white line drawing with personality, cartoon style, no shading or color. "
-                f"Make the drawing look fun and appealing while still being simple enough for children to copy. "
-                f"Avoid overly geometric shapes - use curved lines, expressive features, and natural proportions. "
-                f"Add only what this step describes, but make it look good and engaging. "
-                f"REMEMBER: Consistency is essential - the tutorial must show clear progression."
+                f"FORBIDDEN ACTIONS (NEVER DO THESE): "
+                f"- Do NOT erase, remove, or delete ANY existing lines or shapes "
+                f"- Do NOT modify, change, or alter ANY existing elements "
+                f"- Do NOT move, resize, or reposition ANY existing elements "
+                f"- Do NOT redraw, update, or improve ANY existing elements "
+                f"- Do NOT change the style, thickness, or appearance of existing lines "
+                f"ALLOWED ACTIONS (ONLY THESE): "
+                f"- ADD new elements exactly as described in the step "
+                f"- Position new elements relative to existing ones WITHOUT touching existing elements "
+                f"- Match the existing drawing style for new elements only "
+                f"SPECIFIC EXAMPLES: "
+                f"- If the step says 'add eyes to the head', the head must remain pixel-perfect identical "
+                f"- If the step says 'add legs below the body', the body must stay completely unchanged "
+                f"- If the step says 'add a tail', all existing body parts must remain exactly as they were "
+                f"Background: Keep the pure white background - no patterns, textures, or colors in the background. "
+                f"Style: Clean, engaging black line drawing with personality, cartoon style, no shading or color fill. "
+                f"Use only black lines on pure white background - no gray tones or colored areas. "
+                f"Make NEW additions look good while leaving ALL existing elements completely untouched. "
+                f"REMEMBER: Consistency preservation of existing elements is the highest priority."
             )
             input_content[0]["text"] = image_prompt
         elif step_number > 1:
@@ -411,7 +434,7 @@ def generate_step_image(
                 print(f"           Text: \"{content_item['text']}\"")
             elif content_item["type"] == "input_image":
                 print(f"       [{idx}] Type: input_image")
-                print(f"           Image URL: data:image/png;base64,[BASE64_DATA]")
+                print(f"           Image URL: data:image/jpeg;base64,[BASE64_DATA]")
         print(f"   Tools: image_generation (quality: low)")
         print("-" * 80)
 
@@ -448,8 +471,10 @@ def generate_step_image(
         print(f"✅ Step {step_number} image generated successfully")
 
         # Save the image to the session folder
-        sanitized_subject = sanitize_filename(subject)
-        filename = f"step_{step_number:02d}_{sanitized_subject}.png"
+        # Use lowercase with underscores for filename consistency
+        filename_subject = subject.lower().replace(" ", "_")
+        sanitized_subject = sanitize_filename(filename_subject)
+        filename = f"step_{step_number:02d}_{sanitized_subject}.jpeg"
         file_path = session_folder / filename
 
         # Decode base64 and save directly
@@ -491,7 +516,7 @@ def main():
         steps = generate_drawing_steps(subject)
         print("📝 Generated Steps:\n")
         for i, step in enumerate(steps, 1):
-            print(f"   Step {i}: {step}")
+            print(f"🔹Step {i}: {step}")
 
         print(f"\n✅ Total steps generated: {len(steps)}")
 
