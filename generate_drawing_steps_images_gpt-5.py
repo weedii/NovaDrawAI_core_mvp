@@ -173,10 +173,17 @@ def generate_drawing_steps(subject):
     """
 
     prompt = f"""
-    Create engaging, detailed kid-friendly drawing steps to draw a {subject}. The number of steps should be between 3 and 7, depending on the complexity of the subject:
+    Create a complete, detailed, consistent step-by-step drawing tutorial for a {subject}. The number of steps should be between 3 and 7, depending on the complexity of the subject:
     - Simple subjects (like basic shapes, sun, moon): 3-4 steps
     - Medium complexity subjects (like animals, trees, houses): 4-6 steps  
     - Complex subjects (like detailed animals, vehicles, people): 5-7 steps
+    
+    CRITICAL CONSISTENCY RULES:
+    1. Each step must build EXACTLY on what was drawn in previous steps
+    2. Never contradict or change what was established in earlier steps
+    3. Be specific about placement relative to existing elements
+    4. Use consistent terminology throughout (if you call it "head" in step 1, don't call it "face" in step 3)
+    5. Maintain consistent proportions and style descriptions
     
     Make each step descriptive and specific to create a fun, recognizable drawing. Avoid overly simple geometric shapes like "draw a triangle for the nose". Instead, use more engaging descriptions:
     - Instead of "triangle nose" → "small curved nose" or "tiny button nose"
@@ -184,7 +191,7 @@ def generate_drawing_steps(subject):
     - Instead of "rectangle body" → "rounded body shape" or "fluffy body"
     - Add personality with expressions, poses, and characteristic features
     
-    Each step should be one clear sentence that a 6-year-old can follow, but with enough detail to make the drawing look good and fun.
+    Each step should be one clear descriptive sentence that a kid can follow, but with enough detail to make the drawing look good and fun.
     Focus ONLY on drawing shapes, lines, and basic features - NO coloring, shading, or decorative details.
     Stop when the basic recognizable form is complete with personality, even if fewer steps than initially planned.
     
@@ -192,13 +199,15 @@ def generate_drawing_steps(subject):
     Do NOT include phrases like "Here are the steps" or "Have fun drawing".
     Do NOT include coloring instructions like "color it red" or "add some color".
     
-    Example format for a cat:
-    Draw a round fluffy head with two small triangular ears on top
-    Add two big round eyes with tiny dots in the center and a small curved nose below
-    Draw a rounded body shape connected to the head
-    Add four short legs with small paws at the bottom
-    Draw a long curved tail coming from the back of the body
-    Add three small whiskers on each side of the face
+    Example format for a cat (notice how each step builds on the previous):
+    Draw a round fluffy head in the center
+    Add two small triangular ears on top of the head
+    Draw two big round eyes with tiny dots inside, positioned in the upper part of the head
+    Add a small curved nose below and between the eyes
+    Draw a rounded body shape connected below the head
+    Add four short legs extending down from the body
+    Draw a long curved tail coming from the back right side of the body
+    Add three small whiskers on each side of the head, near the nose
     
     Subject: {subject}
     Steps:
@@ -364,16 +373,22 @@ def generate_step_image(
 
             # Update prompt for editing
             image_prompt = (
-                f"We are creating a step-by-step drawing tutorial to teach kids how to draw a {subject}. "
-                f"We are now at step {step_number} of the tutorial. "
-                f"Start from the given image and add only what is described in this step: {step_description} "
-                f"IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. "
-                f"Only add what this specific step describes. Do not add elements from future steps. "
-                f"Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. "
+                f"CRITICAL: You are editing step {step_number} of a {subject} drawing tutorial. "
+                f"The previous image shows the result of steps 1-{step_number-1}. "
+                f"PRESERVE EVERYTHING: Copy the previous image EXACTLY - every line, curve, shape, and detail must remain identical. "
+                f"ONLY ADD: {step_description} "
+                f"CONSISTENCY REQUIREMENTS: "
+                f"- Do not change, move, resize, or redraw ANY existing elements "
+                f"- Do not modify the style, thickness, or appearance of existing lines "
+                f"- New elements must match the existing drawing style perfectly "
+                f"- Position new elements exactly as described relative to existing ones "
+                f"- If the step says 'add eyes to the head', the head must remain exactly as it was "
+                f"- If the step says 'add legs below the body', the body must stay identical "
                 f"Style: Clean, engaging black and white line drawing with personality, cartoon style, no shading or color. "
                 f"Make the drawing look fun and appealing while still being simple enough for children to copy. "
                 f"Avoid overly geometric shapes - use curved lines, expressive features, and natural proportions. "
-                f"Add only what this step describes, but make it look good and engaging."
+                f"Add only what this step describes, but make it look good and engaging. "
+                f"REMEMBER: Consistency is essential - the tutorial must show clear progression."
             )
             input_content[0]["text"] = image_prompt
         elif step_number > 1:
@@ -474,9 +489,11 @@ def main():
 
         # Generate drawing steps
         steps = generate_drawing_steps(subject)
-        print("📝 Steps:\n")
-        for step in steps:
-            print(step)
+        print("📝 Generated Steps:\n")
+        for i, step in enumerate(steps, 1):
+            print(f"   Step {i}: {step}")
+
+        print(f"\n✅ Total steps generated: {len(steps)}")
 
         print("\n🎨 Generating and saving images...\n")
         saved_images = []
@@ -484,7 +501,8 @@ def main():
         # Generate images with progress tracking
         for i, step in enumerate(steps, start=1):
             try:
-                print(f"Generating image {i}/{len(steps)}...")
+                print(f"\n🎨 Generating Step {i}/{len(steps)}")
+                print(f"   Task: {step}")
 
                 # Get previous image path if it exists
                 previous_image_path = None
@@ -492,6 +510,9 @@ def main():
                     previous_image_path = saved_images[
                         -1
                     ]  # Last successfully saved image
+                    print(f"   Building on: {Path(previous_image_path).name}")
+                else:
+                    print(f"   Starting fresh: First step")
 
                 saved_path = generate_step_image(
                     step,
