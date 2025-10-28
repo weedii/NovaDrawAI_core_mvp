@@ -121,6 +121,7 @@ def print_cost_summary():
 # Load environment variables from .env file
 def load_env_file():
     """Manually load .env file if python-dotenv is not available"""
+
     env_path = Path(".env")
     if env_path.exists():
         with open(env_path, "r") as f:
@@ -168,20 +169,36 @@ def sanitize_filename(name):
 
 def generate_drawing_steps(subject):
     """
-    Ask GPT to create 5 to 7 simple drawing steps for a given subject.
+    Ask GPT to create 3-7 simple drawing steps for a given subject based on complexity.
     """
 
     prompt = f"""
-    Create 5 simple kid-friendly drawing steps to draw a {subject}.
-    Each step should describe what to draw next in one short sentence, like teaching a 6-year-old.
+    Create engaging, detailed kid-friendly drawing steps to draw a {subject}. The number of steps should be between 3 and 7, depending on the complexity of the subject:
+    - Simple subjects (like basic shapes, sun, moon): 3-4 steps
+    - Medium complexity subjects (like animals, trees, houses): 4-6 steps  
+    - Complex subjects (like detailed animals, vehicles, people): 5-7 steps
+    
+    Make each step descriptive and specific to create a fun, recognizable drawing. Avoid overly simple geometric shapes like "draw a triangle for the nose". Instead, use more engaging descriptions:
+    - Instead of "triangle nose" → "small curved nose" or "tiny button nose"
+    - Instead of "circle eyes" → "two round eyes with small dots inside" or "big friendly eyes"
+    - Instead of "rectangle body" → "rounded body shape" or "fluffy body"
+    - Add personality with expressions, poses, and characteristic features
+    
+    Each step should be one clear sentence that a 6-year-old can follow, but with enough detail to make the drawing look good and fun.
+    Focus ONLY on drawing shapes, lines, and basic features - NO coloring, shading, or decorative details.
+    Stop when the basic recognizable form is complete with personality, even if fewer steps than initially planned.
     
     IMPORTANT: Return ONLY the steps, one per line, without any numbering, introduction, or conclusion.
     Do NOT include phrases like "Here are the steps" or "Have fun drawing".
+    Do NOT include coloring instructions like "color it red" or "add some color".
     
-    Example format:
-    Start with a big oval for the body
-    Add a circle on top for the head
-    Draw two eyes inside the head
+    Example format for a cat:
+    Draw a round fluffy head with two small triangular ears on top
+    Add two big round eyes with tiny dots in the center and a small curved nose below
+    Draw a rounded body shape connected to the head
+    Add four short legs with small paws at the bottom
+    Draw a long curved tail coming from the back of the body
+    Add three small whiskers on each side of the face
     
     Subject: {subject}
     Steps:
@@ -208,7 +225,7 @@ def generate_drawing_steps(subject):
         # Split by lines and clean up
         steps = [line.strip() for line in steps_text.split("\n") if line.strip()]
 
-        # Filter out any remaining numbered lines or intro/outro text
+        # Filter out any remaining numbered lines, intro/outro text, and coloring instructions
         clean_steps = []
         for step in steps:
             # Skip lines that look like introductions or conclusions
@@ -224,9 +241,8 @@ def generate_drawing_steps(subject):
                 ]
             ):
                 continue
-            # Remove numbering if present
-            import re
 
+            # Remove numbering if present
             clean_step = re.sub(r"^\d+\.\s*", "", step)
             if clean_step and len(clean_step) > 10:  # Ensure it's a meaningful step
                 clean_steps.append(clean_step)
@@ -234,6 +250,20 @@ def generate_drawing_steps(subject):
         if not clean_steps:
             raise ValueError("No valid steps generated")
 
+        # Ensure we have between 3-7 steps as intended
+        if len(clean_steps) < 3:
+            raise ValueError(
+                f"Generated only {len(clean_steps)} steps, but need at least 3 for a proper drawing tutorial"
+            )
+        elif len(clean_steps) > 7:
+            print(
+                f"⚠️ Generated {len(clean_steps)} steps, trimming to 7 to keep it simple for kids"
+            )
+            clean_steps = clean_steps[:7]
+
+        print(
+            f"✅ Generated {len(clean_steps)} drawing steps based on subject complexity"
+        )
         return clean_steps
 
     except Exception as e:
@@ -302,8 +332,10 @@ def generate_step_image(
             f"Your task: {step_description} "
             f"IMPORTANT: Only do what is described in this step. Do not add elements from future steps. "
             f"Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. "
-            f"Style: Simple black and white line drawing, clean cartoon style, no shading or color. "
-            f"Make it easy for children to copy. Show only the basic shapes and lines needed for this specific step."
+            f"Style: Clean, engaging black and white line drawing with personality, cartoon style, no shading or color. "
+            f"Make the drawing look fun and appealing while still being simple enough for children to copy. "
+            f"Avoid overly geometric shapes - use curved lines, expressive features, and natural proportions. "
+            f"Show only what is described in this specific step, but make it look good and engaging."
         )
 
         # Prepare input content
@@ -315,6 +347,9 @@ def generate_step_image(
             and step_number > 1
             and Path(previous_image_path).exists()
         ):
+            print(
+                f"🔗 Using previous image for consistency: {Path(previous_image_path).name}"
+            )
             # Encode previous image as base64
             with open(previous_image_path, "rb") as f:
                 previous_image_base64 = base64.b64encode(f.read()).decode("utf-8")
@@ -335,10 +370,19 @@ def generate_step_image(
                 f"IMPORTANT: Keep all existing elements exactly as they are. Do not modify or remove anything from the previous steps. "
                 f"Only add what this specific step describes. Do not add elements from future steps. "
                 f"Do NOT include any text, labels, or words in the image. Only draw the shapes and lines. "
-                f"Style: Simple black and white line drawing, clean cartoon style, no shading or color. "
-                f"Make it easy for children to copy."
+                f"Style: Clean, engaging black and white line drawing with personality, cartoon style, no shading or color. "
+                f"Make the drawing look fun and appealing while still being simple enough for children to copy. "
+                f"Avoid overly geometric shapes - use curved lines, expressive features, and natural proportions. "
+                f"Add only what this step describes, but make it look good and engaging."
             )
             input_content[0]["text"] = image_prompt
+        elif step_number > 1:
+            print(
+                f"⚠️ WARNING: Step {step_number} should build on previous image, but no previous image available!"
+            )
+            print(
+                f"   This may cause inconsistency. Previous image path: {previous_image_path}"
+            )
 
         # Print the full prompt structure being sent to the API
         print(f"🔍 FULL PROMPT STRUCTURE for step {step_number}:")
@@ -460,11 +504,14 @@ def main():
 
                 if saved_path is not None:
                     saved_images.append(saved_path)
+                    print(f"✅ Step {i} completed successfully - ready for next step")
                 else:
-                    print(f"⚠️ Warning: Failed to generate image for step {i}")
+                    print(f"❌ CRITICAL: Failed to generate image for step {i}")
+                    print(f"   This will break consistency for remaining steps!")
 
             except Exception as e:
-                print(f"⚠️ Warning: Failed to generate image for step {i}: {e}")
+                print(f"❌ CRITICAL ERROR: Failed to generate image for step {i}: {e}")
+                print(f"   This will break consistency for remaining steps!")
                 print("Continuing with next step...")
                 continue
 
